@@ -16,7 +16,7 @@ PY3 = sys.version_info[0] == 3
 if PY2:
     str_encode = lambda s: str(s)
 elif PY3:
-    str_encode = lambda s: str(s, 'utf-8')
+    str_encode = lambda s: s.decode('utf-8') if isinstance(s, bytes) else s
 
 
 class StandardPBEStringEncryptor(object):
@@ -61,7 +61,8 @@ class StandardPBEStringEncryptor(object):
         :param s: str - the string to pad
         :return: a padded string that can be fed to the cipher
         """
-        return s + (block_size - len(s) % block_size) * chr(block_size - len(s) % block_size)
+        padding = (block_size - len(s) % block_size)
+        return s.encode("utf-8") + bytes([padding] * padding)
 
     @staticmethod
     def unpad(s):
@@ -74,7 +75,7 @@ class StandardPBEStringEncryptor(object):
         if PY2:
             return s[0:-ord(s[-1])]
         elif PY3:
-            return s[0:-s[-1]]
+            return s[:-s[-1]].decode("utf-8")
         else:
             raise ImportError('Only Python 2 and 3 are supported')
 
@@ -93,7 +94,7 @@ class StandardPBEStringEncryptor(object):
         encrypted_message = cipher.encrypt(self.pad(AES.block_size, text))
 
         # concatenate salt + encrypted message
-        return str_encode(b64encode(bytes(salt) + encrypted_message))
+        return str_encode(b64encode(salt + encrypted_message))
 
     def decrypt(self, password, ciphertext, iterations=1000):
 

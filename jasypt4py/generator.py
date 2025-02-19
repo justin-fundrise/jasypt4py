@@ -2,7 +2,7 @@
 from __future__ import (absolute_import, division, print_function)
 
 from abc import ABCMeta, abstractmethod
-from Crypto import Random
+from Crypto.Random import get_random_bytes
 
 from jasypt4py.exceptions import ArgumentError
 
@@ -211,7 +211,7 @@ class RandomSaltGenerator(SaltGenerator):
         super(RandomSaltGenerator, self).__init__(salt_block_size)
 
     def generate_salt(self):
-        return bytearray(Random.get_random_bytes(self.salt_block_size))
+        return bytearray(get_random_bytes(self.salt_block_size))
 
 
 class FixedSaltGenerator(SaltGenerator):

@@ -69,7 +69,7 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
 
-        # works on anything that can run pycrypto
+        # works on anything that can run pycryptodome
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3'
@@ -78,7 +78,7 @@ setup(
     keywords='jasypt bouncycastle AES crypto SHA256',
 
     install_requires=[
-        'pycrypto'
+        'pycryptodome'
     ],
 
     # prepare for testing with nose
